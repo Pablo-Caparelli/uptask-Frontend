@@ -40,7 +40,7 @@ export async function getTaskById({
     if (response.success) {
       return response.data;
     }
-    return data;
+    return response.data;
   } catch (error) {
     if (isAxiosError(error) && error.response) {
       throw new Error(error.response.data.error);

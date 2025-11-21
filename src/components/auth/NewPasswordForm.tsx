@@ -39,7 +39,7 @@ export default function NewPasswordForm({ token }: NewPasswordFormProps) {
   const handleNewPassword = (formData: NewPasswordForm) => {
     const data = {
       formData,
-      token,
+      token: { token },
     };
     mutate(data);
   };

@@ -1,11 +1,6 @@
-import { Fragment } from "react";
+import { Fragment, useEffect } from "react";
 import { Dialog, Transition } from "@headlessui/react";
-import {
-  Navigate,
-  useLocation,
-  useNavigate,
-  useParams,
-} from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { getTaskById, updateStatus } from "@/api/TaskAPI";
 import { toast } from "react-toastify";
@@ -50,11 +45,17 @@ export default function TaskModalDetails() {
     mutate(data);
   };
 
-  if (isError) {
-    toast.error(error.message, { toastId: "error" });
-    return <Navigate to={`/projects/${projectId}`} />;
-    //este navigate redirije al usuario de manera programada
-  }
+  useEffect(() => {
+    if (isError && error) {
+      toast.error(error.message, { toastId: "error" });
+    }
+  }, [isError, error]);
+
+  useEffect(() => {
+    if (isError) {
+      navigate(`/projects/${projectId}`);
+    }
+  }, [isError, navigate, projectId]);
 
   if (data)
     return (
@@ -104,6 +105,19 @@ export default function TaskModalDetails() {
                     <p className="text-lg text-slate-500 mb-2">
                       Descripción: {data.description}
                     </p>
+
+                    <p className="text-lg text-slate-500 mb-2">
+                      Historial de Cambios
+                    </p>
+                    {data.completedBy.map((activityLog) => (
+                      <p key={activityLog._id}>
+                        <span className="font-bold text-slate-600">
+                          {statusTranslations[activityLog.status]}
+                        </span>{" "}
+                        por: {activityLog.user.name}
+                      </p>
+                    ))}
+
                     <div className="my-5 space-y-3">
                       <label className="font-bold">Estado Actual:</label>
 

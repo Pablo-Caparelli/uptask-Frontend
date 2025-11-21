@@ -16,6 +16,7 @@ export default function ConfirmAccountView() {
     },
     onSuccess: (data) => {
       toast.success(data);
+      setToken("");
     },
   });
 
