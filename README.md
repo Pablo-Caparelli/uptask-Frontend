@@ -46,3 +46,4 @@ npm i @tailwindcss/forms
 
 dnd kit
 npm install @dnd-kit/core
+npm i zod@3.22.4
