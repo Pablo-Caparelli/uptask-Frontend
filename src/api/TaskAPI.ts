@@ -37,9 +37,12 @@ export async function getTaskById({
     const url = `/projects/${projectId}/tasks/${taskId}`;
     const { data } = await api(url);
     const response = taskSchema.safeParse(data);
-    if (response.success) {
-      return response.data;
+    if (!response.success) {
+      throw new Error("Error al validar la tarea");
     }
+    // if (response.success) {
+    //   return response.data;
+    // }
     return response.data;
   } catch (error) {
     if (isAxiosError(error) && error.response) {
